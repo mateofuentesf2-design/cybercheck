@@ -1,11 +1,27 @@
 from rich.console import Console
+from actions.firewall import block_ip
+from actions.rate_control import throttle_ip
 
 console = Console()
 
-def handle(action, result):
-    if action == "block":
-        console.print(f"[bold red]BLOCKED:[/bold red] {result['type']}")
-    elif action == "monitor":
-        console.print(f"[yellow]MONITOR:[/yellow] {result['type']}")
-    elif action == "allow":
-        console.print(f"[green]ALLOWED[/green]")
+def respond(request, findings, mode, risk_score):
+    ip = request.get("ip")
+
+    for f in findings:
+        console.print(f"[red]Threat:[/red] {f['type']} ({f['severity']})")
+
+    if mode == "monitor":
+        console.print("[yellow]Monitoring only[/yellow]")
+        return
+
+    if mode == "allow":
+        console.print("[green]Allowed[/green]")
+        return
+
+    # modo block inteligente
+    if risk_score >= 5:
+        block_ip(ip)
+        console.print(f"[bold red]IP BLOCKED: {ip}[/bold red]")
+    elif risk_score >= 3:
+        throttle_ip(ip)
+        console.print(f"[yellow]Rate limited: {ip}[/yellow]")

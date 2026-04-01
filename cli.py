@@ -13,6 +13,13 @@ import modules.file_upload as upload
 import modules.headers_security as headers
 import modules.bot_detection as bot
 
+import json
+
+def load_rules():
+    with open("config/rules.json") as f:
+        return json.load(f)
+
+
 from rich.console import Console
 from rich.table import Table
 

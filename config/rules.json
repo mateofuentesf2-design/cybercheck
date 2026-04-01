@@ -1,0 +1,6 @@
+{
+    "SQLi": "block",
+    "XSS": "block",
+    "DoS": "throttle",
+    "Bot Activity": "monitor"
+}
