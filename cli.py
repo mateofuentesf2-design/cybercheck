@@ -5,13 +5,31 @@ from core.logger import save_report
 import modules.sqli as sqli
 import modules.xss as xss
 import modules.rate_limit as rate
+import modules.csrf as csrf
+import modules.auth_bypass as auth
+import modules.path_traversal as pt
+import modules.command_injection as cmd
+import modules.file_upload as upload
+import modules.headers_security as headers
+import modules.bot_detection as bot
 
 from rich.console import Console
 from rich.table import Table
 
 console = Console()
 
-engine = SecurityEngine([sqli, xss, rate])
+engine = SecurityEngine([
+    sqli, 
+    xss, 
+    rate,
+    csrf,
+    auth,
+    pt,
+    cmd,
+    upload,
+    headers,
+    bot
+    ])
 
 def show_result(result, mode):
     table = Table(title="⚠️ Threat Detected")
