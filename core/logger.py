@@ -10,3 +10,5 @@ def save_report(data, risk):
         "events": data
     }
 
+    with open("audit_log.json", "w") as f:
+        f.write(json.dumps(report) + "\n")
